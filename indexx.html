@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI PDF Summarizer</title>
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --panel: #11131a;
+      --accent: #7c5cff;
+      --accent-2: #00d3a7;
+      --muted: #b8c1cc;
+      --text: #e6edf3;
+      --danger: #ff5d5d;
+      --ok: #2ecc71;
+      --border: #1e2230;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(124,92,255,.18), transparent 60%),
+                  radial-gradient(1200px 700px at 120% 20%, rgba(0,211,167,.15), transparent 60%),
+                  var(--bg);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 40px 20px;
+    }
+    .wrap {
+      width: min(1100px, 96vw);
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(124,92,255,.10), transparent);
+    }
+    .title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+    .badge {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid #3a3f55;
+      color: var(--muted);
+    }
+
+    .card-body { padding: 22px; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 18px;
+    }
+    .row { display: contents; }
+
+    .field {
+      background: #0f1424;
+      border: 1px solid #1f2a44;
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .label {
+      font-size: 12px;
+      letter-spacing: .4px;
+      color: #9fb0c7;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+    }
+    .num {
+      width: 22px; height: 22px;
+      display: inline-grid; place-items: center;
+      border-radius: 50%;
+      background: #171e33;
+      border: 1px solid #2a3147;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 12px;
+      flex: 0 0 22px;
+    }
+
+    .file-row {
+      display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center;
+    }
+    input[type="text"], select, textarea {
+      width: 100%;
+      background: #0b1124;
+      border: 1px solid #243155;
+      color: var(--text);
+      padding: 12px 12px;
+      border-radius: 12px;
+      outline: none;
+      font-size: 14px;
+    }
+    textarea { min-height: 170px; resize: vertical; }
+
+    .btn {
+      appearance: none; border: 0; cursor: pointer;
+      padding: 12px 14px; border-radius: 12px; font-weight: 700;
+      background: var(--accent); color: white; box-shadow: 0 6px 20px rgba(124,92,255,.35);
+    }
+    .btn.secondary { background: #243155; box-shadow: none; }
+    .btn.ghost { background: transparent; border: 1px solid #324162; color: var(--muted); box-shadow: none; }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    .inline {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #10172a; border: 1px solid #223055; color: #9fb0c7;
+      padding: 8px 10px; border-radius: 999px; font-size: 13px; font-weight: 600;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); }
+    .dot.ok { background: var(--ok); }
+
+    .footer {
+      padding: 16px 22px; display: flex; gap: 10px; border-top: 1px solid var(--border);
+      background: linear-gradient(0deg, rgba(0,211,167,.10), transparent);
+    }
+    .grow { flex: 1; }
+
+    @media (max-width: 920px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card" role="form" aria-label="AI Summarizer">
+      <header class="card-header">
+        <div class="title">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 6a2 2 0 0 1 2-2h7l5 5v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6z" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M13 4v4a2 2 0 0 0 2 2h4" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <div>AI Summarizer for PDF</div>
+          <span class="badge" id="modeBadge">Mode: Detecting…</span>
+        </div>
+        <div class="inline">
+          <span class="chip"><span class="dot" id="netDot"></span><span id="netText">Checking connection…</span></span>
+        </div>
+      </header>
+
+      <div class="card-body">
+        <div class="grid">
+          <div class="row">
+            <div class="field">
+              <div class="label"><span class="num">1</span> File Path</div>
+              <div class="file-row">
+                <input id="filePath" type="text" placeholder="C:/MyData/filename.pdf" autocomplete="off" />
+                <input id="fileInput" type="file" accept="application/pdf" hidden />
+                <button class="btn secondary" id="browseBtn" type="button">Browse</button>
+              </div>
+            </div>
+            <div class="field">
+              <div class="label"><span class="num">2</span> Model</div>
+              <select id="modelSelect" aria-label="Model">
+                <option value="bart">BART</option>
+                <option value="llm">LLM</option>
+                <option value="pegasus">Regasus</option>
+                <option value="t5">T5</option>
+                <option value="4pt">4PT</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <div class="label"><span class="num">3</span> Summary Length</div>
+              <div class="inline" role="radiogroup" aria-label="Summary length">
+                <label class="chip"><input type="radio" name="len" value="short" checked /> Short</label>
+                <label class="chip"><input type="radio" name="len" value="medium" /> Medium</label>
+                <label class="chip"><input type="radio" name="len" value="long" /> Long</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="label"><span class="num">4</span> Mode</div>
+              <div class="inline">
+                <select id="modeSelect">
+                  <option value="online">Online</option>
+                  <option value="offline">Offline</option>
+                </select>
+                <span class="chip">Auto-switch when offline</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <div class="label"><span class="num">5</span> Load / Process</div>
+              <div class="inline">
+                <button class="btn" id="summarizeBtn" type="button">Summarize</button>
+                <button class="btn ghost" id="clearBtn" type="button">Clear</button>
+              </div>
+            </div>
+            <div class="field">
+              <div class="label"><span class="num">6</span> Output File Name</div>
+              <input id="outPath" type="text" placeholder="C:/MyData/filename_summary.txt (browser will download)" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field" style="grid-column: 1 / -1;">
+              <div class="label"><span class="num">7</span> Summary (Text)</div>
+              <textarea id="summaryBox" placeholder="The generated summary will appear here…"></textarea>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="grow"></div>
+        <button class="btn secondary" id="copyBtn" type="button">Copy</button>
+        <button class="btn" id="downloadBtn" type="button">Download Output</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const filePath = document.getElementById('filePath');
+    const fileInput = document.getElementById('fileInput');
+    const browseBtn = document.getElementById('browseBtn');
+
+    const modeSelect = document.getElementById('modeSelect');
+    const modeBadge  = document.getElementById('modeBadge');
+    const netDot     = document.getElementById('netDot');
+    const netText    = document.getElementById('netText');
+
+    const summarizeBtn = document.getElementById('summarizeBtn');
+    const clearBtn     = document.getElementById('clearBtn');
+    const outPath      = document.getElementById('outPath');
+    const summaryBox   = document.getElementById('summaryBox');
+    const copyBtn      = document.getElementById('copyBtn');
+    const downloadBtn  = document.getElementById('downloadBtn');
+
+    browseBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files?.[0]) {
+        filePath.value = fileInput.files[0].name;
+      }
+    });
+
+    function updateNetworkState() {
+      const online = navigator.onLine;
+      netDot.classList.toggle('ok', online);
+      netText.textContent = online ? 'Online' : 'Offline';
+
+      if (!online) {
+        modeSelect.value = 'offline';
+        modeSelect.setAttribute('disabled','');
+      } else {
+        modeSelect.removeAttribute('disabled');
+      }
+
+      modeBadge.textContent = `Mode: ${modeSelect.value.charAt(0).toUpperCase() + modeSelect.value.slice(1)}`;
+    }
+    window.addEventListener('online', updateNetworkState);
+    window.addEventListener('offline', updateNetworkState);
+    modeSelect.addEventListener('change', updateNetworkState);
+    updateNetworkState();
+
+    summarizeBtn.addEventListener('click', async () => {
+      const model = document.getElementById('modelSelect').value;
+      const len   = (new FormData(document.querySelector('section.card'))).get('len') || document.querySelector('input[name="len"]:checked')?.value;
+
+      if (!fileInput.files?.[0] && !filePath.value.trim()) {
+        alert('Please choose a PDF (Browse or type a path).');
+        return;
+      }
+
+      summarizeBtn.disabled = true; summarizeBtn.textContent = 'Summarizing…';
+
+      const filename = fileInput.files?.[0]?.name || filePath.value.trim() || 'document.pdf';
+      const mock = `Summary (model: ${model.toUpperCase()}, length: ${len}, mode: ${modeSelect.value})\n\n• File: ${filename}\n• This is a placeholder UI. Wire your backend API to replace this text with the real summary.\n• When offline, the mode is forced to Offline automatically.`;
+      summaryBox.value = mock;
+
+      summarizeBtn.disabled = false; summarizeBtn.textContent = 'Summarize';
+    });
+
+    clearBtn.addEventListener('click', () => {
+      summaryBox.value = '';
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(summaryBox.value);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => copyBtn.textContent = 'Copy', 1200);
+      } catch (e) {
+        alert('Could not copy to clipboard.');
+      }
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      const text = summaryBox.value || '';
+      const fileNameInput = outPath.value.trim();
+      const fallback = (fileInput.files?.[0]?.name || filePath.value || 'summary').replace(/\.[^/.]+$/, '') + '_summary.txt';
+      const name = (fileNameInput.split(/\\|\//).pop() || fallback) || 'summary.txt';
+
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = name; a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
