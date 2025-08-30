@@ -31,120 +31,31 @@
       place-items: center;
       padding: 40px 20px;
     }
-    .wrap {
-      width: min(1100px, 96vw);
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .card-header {
-      padding: 18px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(124,92,255,.10), transparent);
-    }
-    .title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 700;
-      letter-spacing: .3px;
-    }
-    .badge {
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid #3a3f55;
-      color: var(--muted);
-    }
-
+    .wrap { width: min(1100px, 96vw); }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .card-header { padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, rgba(124,92,255,.10), transparent); }
+    .title { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: .3px; }
+    .badge { font-size: 12px; padding: 4px 8px; border-radius: 999px; border: 1px solid #3a3f55; color: var(--muted); }
     .card-body { padding: 22px; }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px 18px;
-    }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
     .row { display: contents; }
-
-    .field {
-      background: #0f1424;
-      border: 1px solid #1f2a44;
-      border-radius: 14px;
-      padding: 14px;
-    }
-    .label {
-      font-size: 12px;
-      letter-spacing: .4px;
-      color: #9fb0c7;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-transform: uppercase;
-    }
-    .num {
-      width: 22px; height: 22px;
-      display: inline-grid; place-items: center;
-      border-radius: 50%;
-      background: #171e33;
-      border: 1px solid #2a3147;
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 12px;
-      flex: 0 0 22px;
-    }
-
-    .file-row {
-      display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center;
-    }
-    input[type="text"], select, textarea {
-      width: 100%;
-      background: #0b1124;
-      border: 1px solid #243155;
-      color: var(--text);
-      padding: 12px 12px;
-      border-radius: 12px;
-      outline: none;
-      font-size: 14px;
-    }
+    .field { background: #0f1424; border: 1px solid #1f2a44; border-radius: 14px; padding: 14px; }
+    .label { font-size: 12px; letter-spacing: .4px; color: #9fb0c7; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+    .num { width: 22px; height: 22px; display: inline-grid; place-items: center; border-radius: 50%; background: #171e33; border: 1px solid #2a3147; color: var(--accent); font-weight: 700; font-size: 12px; flex: 0 0 22px; }
+    .file-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+    input[type="text"], select, textarea { width: 100%; background: #0b1124; border: 1px solid #243155; color: var(--text); padding: 12px 12px; border-radius: 12px; outline: none; font-size: 14px; }
     textarea { min-height: 170px; resize: vertical; }
-
-    .btn {
-      appearance: none; border: 0; cursor: pointer;
-      padding: 12px 14px; border-radius: 12px; font-weight: 700;
-      background: var(--accent); color: white; box-shadow: 0 6px 20px rgba(124,92,255,.35);
-    }
+    .btn { appearance: none; border: 0; cursor: pointer; padding: 12px 14px; border-radius: 12px; font-weight: 700; background: var(--accent); color: white; box-shadow: 0 6px 20px rgba(124,92,255,.35); }
     .btn.secondary { background: #243155; box-shadow: none; }
     .btn.ghost { background: transparent; border: 1px solid #324162; color: var(--muted); box-shadow: none; }
     .btn:disabled { opacity: .5; cursor: not-allowed; }
-
-    .inline {
-      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-    }
-    .chip {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: #10172a; border: 1px solid #223055; color: #9fb0c7;
-      padding: 8px 10px; border-radius: 999px; font-size: 13px; font-weight: 600;
-    }
+    .inline { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .chip { display: inline-flex; align-items: center; gap: 8px; background: #10172a; border: 1px solid #223055; color: #9fb0c7; padding: 8px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); }
     .dot.ok { background: var(--ok); }
-
-    .footer {
-      padding: 16px 22px; display: flex; gap: 10px; border-top: 1px solid var(--border);
-      background: linear-gradient(0deg, rgba(0,211,167,.10), transparent);
-    }
+    .footer { padding: 16px 22px; display: flex; gap: 10px; border-top: 1px solid var(--border); background: linear-gradient(0deg, rgba(0,211,167,.10), transparent); }
     .grow { flex: 1; }
-
-    @media (max-width: 920px) {
-      .grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 920px) { .grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -256,12 +167,11 @@
     const summaryBox   = document.getElementById('summaryBox');
     const copyBtn      = document.getElementById('copyBtn');
     const downloadBtn  = document.getElementById('downloadBtn');
+    const modelSelect  = document.getElementById('modelSelect');
 
     browseBtn.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', () => {
-      if (fileInput.files?.[0]) {
-        filePath.value = fileInput.files[0].name;
-      }
+      if (fileInput.files?.[0]) filePath.value = fileInput.files[0].name;
     });
 
     function updateNetworkState() {
@@ -269,22 +179,46 @@
       netDot.classList.toggle('ok', online);
       netText.textContent = online ? 'Online' : 'Offline';
 
-      if (!online) {
+      const allModels = [
+        { value: 'bart', text: 'BART' },
+        { value: 'llm', text: 'LLM' },
+        { value: 'pegasus', text: 'Regasus' },
+        { value: 't5', text: 'T5' },
+        { value: '4pt', text: '4PT' }
+      ];
+
+      modelSelect.innerHTML = ''; // Clear existing options
+
+      if (online) {
+        allModels.forEach(m => {
+          const opt = document.createElement('option');
+          opt.value = m.value;
+          opt.textContent = m.text;
+          modelSelect.appendChild(opt);
+        });
+        modeSelect.removeAttribute('disabled');
+      } else {
+        allModels.filter(m => m.value === 'bart' || m.value === 't5')
+                 .forEach(m => {
+                   const opt = document.createElement('option');
+                   opt.value = m.value;
+                   opt.textContent = m.text;
+                   modelSelect.appendChild(opt);
+                 });
         modeSelect.value = 'offline';
         modeSelect.setAttribute('disabled','');
-      } else {
-        modeSelect.removeAttribute('disabled');
       }
 
       modeBadge.textContent = `Mode: ${modeSelect.value.charAt(0).toUpperCase() + modeSelect.value.slice(1)}`;
     }
+
     window.addEventListener('online', updateNetworkState);
     window.addEventListener('offline', updateNetworkState);
     modeSelect.addEventListener('change', updateNetworkState);
     updateNetworkState();
 
     summarizeBtn.addEventListener('click', async () => {
-      const model = document.getElementById('modelSelect').value;
+      const model = modelSelect.value;
       const len   = (new FormData(document.querySelector('section.card'))).get('len') || document.querySelector('input[name="len"]:checked')?.value;
 
       if (!fileInput.files?.[0] && !filePath.value.trim()) {
@@ -301,30 +235,19 @@
       summarizeBtn.disabled = false; summarizeBtn.textContent = 'Summarize';
     });
 
-    clearBtn.addEventListener('click', () => {
-      summaryBox.value = '';
-    });
-
+    clearBtn.addEventListener('click', () => summaryBox.value = '');
     copyBtn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(summaryBox.value);
-        copyBtn.textContent = 'Copied!';
-        setTimeout(() => copyBtn.textContent = 'Copy', 1200);
-      } catch (e) {
-        alert('Could not copy to clipboard.');
-      }
+      try { await navigator.clipboard.writeText(summaryBox.value); copyBtn.textContent = 'Copied!'; setTimeout(() => copyBtn.textContent = 'Copy', 1200); }
+      catch(e) { alert('Could not copy to clipboard.'); }
     });
-
     downloadBtn.addEventListener('click', () => {
       const text = summaryBox.value || '';
       const fileNameInput = outPath.value.trim();
       const fallback = (fileInput.files?.[0]?.name || filePath.value || 'summary').replace(/\.[^/.]+$/, '') + '_summary.txt';
       const name = (fileNameInput.split(/\\|\//).pop() || fallback) || 'summary.txt';
-
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = name; a.click();
+      const a = document.createElement('a'); a.href = url; a.download = name; a.click();
       URL.revokeObjectURL(url);
     });
   </script>
